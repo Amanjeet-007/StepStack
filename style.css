@@ -1,0 +1,553 @@
+/* ==========================================================================
+   1. DESIGN TOKENS (Variables)
+   ========================================================================== */
+:root {
+    /* Colors */
+    --bg-dark: #0f172a;
+    --bg-sidebar: #020617;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --accent: #38bdf8;
+    --accent-glow: rgba(56, 189, 248, 0.3);
+    --text-main: #f8fafc;
+    --text-dim: #94a3b8;
+    --danger: #ef4444;
+    --danger-bg: rgba(239, 68, 68, 0.1);
+
+    /* Spacing & Radii */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-full: 9999px;
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Shadows */
+    --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    --shadow-glow: 0 0 15px var(--accent-glow);
+}
+
+/* ==========================================================================
+   2. RESET & BASE STYLES
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    overflow: hidden;
+    /* Prevents body scroll, allows container scroll */
+    line-height: 1.5;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}
+
+/* ==========================================================================
+   3. LAYOUT
+   ========================================================================== */
+.app-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 280px;
+    background: var(--bg-sidebar);
+    padding: 2rem 1.5rem;
+    border-right: 1px solid #1e293b;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.main-content {
+    flex: 1;
+    padding: 2.5rem;
+    overflow-y: auto;
+    background: radial-gradient(circle at top right, #1e293b 0%, var(--bg-dark) 50%);
+}
+
+/* ==========================================================================
+   4. COMPONENTS
+   ========================================================================== */
+
+/* Logo */
+/* StepStack Branding */
+.logo {
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 1.6rem;
+    letter-spacing: -1px;
+    background: linear-gradient(to right, #f8fafc, #38bdf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.2));
+}
+
+.logo-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    -webkit-text-fill-color: initial;
+    /* Reset gradient for icon */
+}
+
+.logo-icon div {
+    height: 4px;
+    background: var(--accent);
+    border-radius: 2px;
+    box-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* Three bars of varying width to look like a Stack */
+.bar-1 {
+    width: 18px;
+    opacity: 1;
+}
+
+.bar-2 {
+    width: 14px;
+    opacity: 0.7;
+}
+
+.bar-3 {
+    width: 10px;
+    opacity: 0.4;
+}
+
+/* Navigation List */
+#course-list {
+    list-style: none;
+    margin-top: 1rem;
+}
+
+#course-list li {
+    padding: 12px 16px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: var(--transition-fast);
+    color: var(--text-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#course-list li:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+}
+
+#course-list li.active {
+    background: var(--card-bg);
+    color: var(--accent);
+}
+
+/* Progress System */
+.progress-container {
+    margin: 1.5rem 0;
+    width: 100%;
+    max-width: 400px;
+}
+
+.progress-bar-bg {
+    height: 8px;
+    background: #334155;
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--accent);
+    box-shadow: var(--shadow-glow);
+    transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Roadmap Grid */
+.roadmap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+/* Phase Card */
+.phase-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 1.75rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow-card);
+    transition: var(--transition-smooth);
+}
+
+.phase-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+}
+
+.phase-card h3 {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Checklist Row */
+.checklist-item {
+    display: flex;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.5);
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: var(--transition-fast);
+    user-select: none;
+}
+
+.checklist-item:hover {
+    background: rgba(56, 189, 248, 0.1);
+    border-color: rgba(56, 189, 248, 0.3);
+}
+
+.checklist-item.done {
+    background: rgba(56, 189, 248, 0.05);
+    opacity: 0.8;
+}
+
+/* Custom Checkbox */
+.custom-check {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--text-dim);
+    border-radius: 6px;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-fast);
+    flex-shrink: 0;
+    pointer-events: none;
+}
+
+.done .custom-check {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.done .custom-check::after {
+    content: '✓';
+    color: var(--bg-dark);
+    font-weight: 800;
+    font-size: 14px;
+}
+
+.checklist-item span {
+    font-size: 0.95rem;
+    color: var(--text-main);
+}
+
+.done span {
+    color: var(--text-dim);
+    text-decoration: line-through;
+}
+
+/* ==========================================================================
+   5. MODALS & POPUPS
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-card {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    width: 90%;
+    max-width: 550px;
+    border: 1px solid #475569;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+input,
+textarea {
+    width: 100%;
+    background: #0f172a;
+    border: 1px solid #334155;
+    color: white;
+    padding: 14px;
+    border-radius: var(--radius-sm);
+    margin: 10px 0;
+    font-family: inherit;
+    transition: border-color var(--transition-fast);
+}
+
+input:focus,
+textarea:focus {
+    border-color: var(--accent);
+    outline: none;
+}
+
+/* ==========================================================================
+   6. BUTTONS & ACTIONS
+   ========================================================================== */
+.btn-primary {
+    background: var(--accent);
+    color: var(--bg-dark);
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 700;
+    width: 100%;
+    transition: var(--transition-fast);
+}
+
+.btn-primary:hover {
+    filter: brightness(1.1);
+    transform: scale(1.01);
+}
+
+.btn-secondary {
+    background: #334155;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    flex: 1;
+}
+
+.btn-add-task {
+    background: transparent;
+    border: 1px dashed #334155;
+    color: var(--text-dim);
+    width: 100%;
+    padding: 12px;
+    border-radius: var(--radius-md);
+    margin-top: 10px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: var(--transition-fast);
+}
+
+.btn-add-task:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(56, 189, 248, 0.05);
+}
+
+/* Icons & Hover Effects */
+.task-actions,
+.phase-actions {
+    display: flex;
+    gap: 12px;
+    opacity: 0;
+    transition: var(--transition-fast);
+}
+
+.checklist-item:hover .task-actions,
+.phase-card:hover .phase-actions {
+    opacity: 1;
+}
+
+.action-icon {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    cursor: pointer;
+}
+
+.action-icon:hover {
+    color: var(--accent);
+}
+
+.action-icon.delete:hover {
+    color: var(--danger);
+}
+
+.delete-btn {
+    opacity: 0;
+    color: var(--danger);
+    transition: var(--transition-fast);
+}
+
+#course-list li:hover .delete-btn {
+    opacity: 1;
+}
+
+.delete-btn:hover {
+    background: var(--danger-bg);
+}
+
+/* ==========================================================================
+   7. UTILITIES & FAB
+   ========================================================================== */
+/* Helper Modal Enhancements */
+.helper-card {
+    max-width: 550px;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.helper-title-set {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.helper-body {
+    margin-top: 1.5rem;
+}
+
+/* Step Logic */
+.guide-step {
+    display: flex;
+    gap: 20px;
+}
+
+.step-badge {
+    width: 32px;
+    height: 32px;
+    background: var(--accent);
+    color: var(--bg-dark);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    flex-shrink: 0;
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.step-content h3 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+    color: var(--text-main);
+}
+
+.step-content p {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 1.4;
+}
+
+.step-connector {
+    width: 2px;
+    height: 25px;
+    background: #334155;
+    margin: 4px 0 4px 15px;
+}
+
+/* Styled Copy Box */
+.copy-box {
+    background: #020617;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-top: 12px;
+    border: 1px solid #1e293b;
+    position: relative;
+}
+
+#ai-prompt {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
+    color: #38bdf8;
+}
+
+.btn-copy {
+    margin-top: 12px;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-copy:hover {
+    background: var(--accent);
+    color: var(--bg-dark);
+}
+
+.helper-footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #334155;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    text-align: center;
+}
+
+.fab-help {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: var(--accent);
+    color: var(--bg-dark);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 10px 20px var(--accent-glow);
+    transition: var(--transition-smooth);
+    z-index: 99;
+}
+
+.fab-help:hover {
+    transform: scale(1.1) rotate(15deg);
+}
+
+.mini-card {
+    max-width: 400px;
+    text-align: center;
+}

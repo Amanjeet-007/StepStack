@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StepStack | Course Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div id="input-modal" class="modal-overlay">
+        <div class="modal-card mini-card">
+            <h3 id="input-modal-title">Edit Item</h3>
+            <input type="text" id="custom-input-field" placeholder="Enter text...">
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeInputModal()">Cancel</button>
+                <button class="btn-primary" id="input-modal-submit">Save Changes</button>
+            </div>
+        </div>
+    </div>
+    <div class="fab-help" onclick="openHelper()" title="How to create a roadmap">
+        <i class="fas fa-map-signs"></i>
+    </div>
+
+    <div id="helper-modal" class="modal-overlay">
+        <div class="modal-card helper-card">
+            <div class="helper-header">
+                <div class="helper-title-set">
+                    <i class="fas fa-magic" style="color: var(--accent);"></i>
+                    <h2>Roadmap Generator</h2>
+                </div>
+                <i class="fas fa-times close-icon" onclick="closeHelper()"></i>
+            </div>
+
+            <div class="helper-body">
+                <div class="guide-step">
+                    <div class="step-badge">1</div>
+                    <div class="step-content">
+                        <h3>Copy the AI Prompt</h3>
+                        <p>Use this prompt with ChatGPT or Gemini to get perfectly formatted data.</p>
+                        <div class="copy-box">
+                            <pre id="ai-prompt">Create a detailed DSA roadmap for [TOPIC]. 
+Strictly follow this format:
+# Phase Name
+Task 1
+Task 2
+# Next Phase
+Task 3</pre>
+                            <button class="btn-copy" onclick="copyPrompt()">
+                                <i class="fas fa-copy"></i> Copy Prompt
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-connector"></div>
+
+                <div class="guide-step">
+                    <div class="step-badge">2</div>
+                    <div class="step-content">
+                        <h3>Create & Paste</h3>
+                        <p>Click the <strong>+ New Course</strong> button and paste the AI's response into the content
+                            box.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="helper-footer">
+                <p><i class="fas fa-info-circle"></i> Pro Tip: Use <code>#</code> for Phase headers.</p>
+            </div>
+        </div>
+    </div>
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-card">
+            <h2>Create New Roadmap</h2>
+            <input type="text" id="new-course-name" placeholder="Course Name (e.g. Web Dev 2026)">
+
+            <label>Structure your phases like this:</label>
+            <textarea id="new-course-content" placeholder="# Phase 1: Basics
+Variable types
+Loops
+# Phase 2: Advanced
+Closures
+Async/Await"></textarea>
+
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn-primary" onclick="handleCreateCourse()">Generate Roadmap</button>
+            </div>
+        </div>
+    </div>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <div class="bar-1"></div>
+                    <div class="bar-2"></div>
+                    <div class="bar-3"></div>
+                </div>
+                STEP<span>STACK</span>
+            </div>
+            <button class="btn-primary" onclick="createNewCourse()">+ New Course</button>
+            <ul id="course-list"></ul>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div class="header-info">
+                    <h1 id="active-course-title">Select a Course</h1>
+                    <div class="progress-container">
+                        <div class="progress-bar-bg">
+                            <div id="global-progress" class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <span id="progress-text">0% Complete</span>
+                    </div>
+                </div>
+            </header>
+
+            <section id="roadmap-container" class="roadmap-grid">
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
