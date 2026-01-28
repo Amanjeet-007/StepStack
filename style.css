@@ -139,38 +139,9 @@ body {
     box-shadow: 0 4px 15px var(--accent-glow);
 }
 
-/* ==========================================================================
-   RESPONSIVE QUERIES
-   ========================================================================== */
-
-/* Tablet View: Collapse Sidebar to Icons */
-@media (max-width: 1024px) {
-    .sidebar {
-        position: fixed;
-        top: 0px;
-        width: 85px;
-        padding: 2rem 0.75rem;
-        align-items: center;
-    }
-
-    .sidebar .logo span,
-    .sidebar li div span,
-    .sidebar .btn-primary span {
-        display: none;
-    }
-
-    .sidebar .btn-primary {
-        padding: 12px;
-        width: 50px;
-    }
-
-    .sidebar .logo {
-        font-size: 0;
-        /* Hides text but keeps icon if you have one */
-    }
+.modal-actions {
+    display: flex;
 }
-
-
 
 /* ==========================================================================
    4. COMPONENTS
@@ -253,7 +224,7 @@ body {
 
 /* Progress System */
 .progress-container {
-    margin: 1.5rem 0;
+    margin: 1rem 0;
     width: 100%;
     max-width: 400px;
 }
@@ -392,6 +363,14 @@ body {
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
+#active-course-title {
+    margin-top: 10px;
+}
+
+textarea {
+    height: 200px;
+}
+
 input,
 textarea {
     width: 100%;
@@ -418,11 +397,10 @@ textarea:focus {
     background: var(--accent);
     color: var(--bg-dark);
     border: none;
-    padding: 12px 24px;
+    padding: 12px;
     border-radius: var(--radius-sm);
     cursor: pointer;
     font-weight: 700;
-    width: 100%;
     transition: var(--transition-fast);
 }
 
@@ -431,14 +409,29 @@ textarea:focus {
     transform: scale(1.01);
 }
 
+#input-modal-submit {
+    background: var(--accent);
+    color: var(--bg-dark);
+    margin-bottom: 10px;
+    border: none;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
 .btn-secondary {
+    margin-bottom: 10px;
     background: #334155;
     color: white;
     border: none;
     padding: 12px;
     border-radius: var(--radius-sm);
     cursor: pointer;
-    flex: 1;
 }
 
 .btn-add-task {
@@ -632,29 +625,43 @@ textarea:focus {
 }
 
 header {
-    width: 100%;
+    width: 100vw;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color:#020617;
 }
 
 .progress-bar-bg {
     display: flex;
     align-items: center;
+    /* double way progress*/
     justify-content: center;
+    /* double way progress*/
     width: 40vw;
 }
 
-#roadmap-container {
-    margin: 0px 270px;
-}
-#helper-modal{
+.fab-help {
     z-index: 99;
 }
-.helper-header{
-position: relative;
+
+#roadmap-container {
+    margin: 120px 270px;
 }
-.cut{
+
+#helper-modal {
+    z-index: 99;
+}
+
+.helper-header {
+    position: relative;
+}
+
+.cut {
     position: absolute;
     right: 20px;
     top: 10px;
@@ -662,11 +669,22 @@ position: relative;
 
 /* Mobile View (Phones & Small Tablets) */
 @media (max-width: 768px) {
+    .logo{
+        width: 100%;
+        margin-top: -15px;
+        padding-bottom: 20px;
+    }
+    .logo-icon span {
+        display: flex;
+    }
+
     .main-content {
         padding: 5rem 1rem 1rem 1rem;
     }
+
     .phase-card {
-    width: min-content;}
+        width: min-content;
+    }
 
     .phase-card {
         flex: 1 1 100%;
@@ -680,7 +698,8 @@ position: relative;
         left: 15px;
         top: 15px;
     }
-    aside{
+
+    aside {
         position: fixed;
         left: -580px;
         /* Hide off-screen */
@@ -692,23 +711,28 @@ position: relative;
         box-shadow: none;
         background: var(--bg-sidebar);
     }
+
     .mobile-toggle {
         display: flex;
         position: fixed;
-        left: 15px; /* Default position */
+        left: 15px;
+        /* Default position */
         top: 15px;
-        z-index: 1100; /* Sidebar se upar */
+        z-index: 1100;
+        /* Sidebar se upar */
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        background: var(--accent); /* Optional: button ko thoda highlight karne ke liye */
+        background: var(--accent);
+        /* Optional: button ko thoda highlight karne ke liye */
         color: white;
         border-radius: 5px;
         padding: 10px;
     }
 
     /* Jab sidebar active ho, button ko right move kar do */
-    .sidebar.active ~ .mobile-toggle, 
+    .sidebar.active~.mobile-toggle,
     .app-container:has(.sidebar.active) .mobile-toggle {
-        left: 230px; /* Sidebar width ke thoda andar ya edge par */
+        left: 230px;
+        /* Sidebar width ke thoda andar ya edge par */
     }
 
     .sidebar {
@@ -717,7 +741,7 @@ position: relative;
         top: 0;
         width: 280px;
         height: 100vh;
-        z-index: 1000;
+        z-index: 5;
         transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -755,17 +779,27 @@ position: relative;
         padding: 1.5rem;
         width: 90%;
     }
-    .btn-primary{
+
+    .btn-primary {
         display: block;
-        width:200px;
+        width: 200px;
     }
-    #mobile{
-        width:70%;
+
+    #mobile {
+        width: 70%;
     }
-    #course-list{
+
+    #course-list {
 
         width: 90%;
     }
+
+    .progress-bar-bg {
+        justify-content: start;
+        display: flex;
+        width: 40vw;
+    }
+
     /* Move FAB to not block the bottom right checklist items */
     .fab-help {
         bottom: 20px;
@@ -783,7 +817,8 @@ position: relative;
         left: 0;
         box-shadow: 20px 0 50px rgba(0, 0, 0, 0.8);
     }
-    .guide-step{
+
+    .guide-step {
         display: flex;
         flex-wrap: wrap;
         /* align-items: center; */
@@ -798,6 +833,14 @@ position: relative;
     /* Make grid single column on small phones */
     .roadmap-grid {
         grid-template-columns: 1fr;
+    }
+
+    .progress-container {
+        margin-top: 25px;
+    }
+
+    .app-container {
+        margin-top: 50px;
     }
 
     .progress-bar-bg {

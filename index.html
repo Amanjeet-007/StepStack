@@ -20,9 +20,7 @@
             </div>
         </div>
     </div>
-    <div class="fab-help" onclick="openHelper()" title="How to create a roadmap">
-        <i class="fas fa-map-signs"></i>
-    </div>
+
 
     <div id="helper-modal" class="modal-overlay">
         <div class="modal-card helper-card">
@@ -78,7 +76,7 @@ Task 3</pre>
             <input type="text" id="new-course-name" placeholder="Course Name (e.g. Web Dev 2026)">
 
             <label>Structure your phases like this:</label>
-            <textarea id="new-course-content" placeholder="# Phase 1: Basics
+            <textarea  id="new-course-content" placeholder="# Phase 1: Basics
 Variable types
 Loops
 # Phase 2: Advanced
@@ -110,6 +108,9 @@ Async/Await"></textarea>
 
         <main class="main-content">
             <header>
+                <div class="fab-help" onclick="openHelper()" title="How to create a roadmap">
+                    <i class="fas fa-map-signs"></i>
+                </div>
                 <div class="header-info">
                     <h1 id="active-course-title">Select a Course</h1>
                     <div class="progress-container">
