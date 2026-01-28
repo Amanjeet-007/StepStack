@@ -31,7 +31,7 @@
                     <i class="fas fa-magic" style="color: var(--accent);"></i>
                     <h2>Roadmap Generator</h2>
                 </div>
-                <i class="fas fa-times close-icon" onclick="closeHelper()"></i>
+                <i class="fas fa-times close-icon cut" onclick="closeHelper()"></i>
             </div>
 
             <div class="helper-body">
@@ -41,7 +41,7 @@
                         <h3>Copy the AI Prompt</h3>
                         <p>Use this prompt with ChatGPT or Gemini to get perfectly formatted data.</p>
                         <div class="copy-box">
-                            <pre id="ai-prompt">Create a detailed DSA roadmap for [TOPIC]. 
+                            <pre id="ai-prompt">Create a detailed roadmap for [TOPIC]. 
 Strictly follow this format:
 # Phase Name
 Task 1
@@ -93,7 +93,7 @@ Async/Await"></textarea>
     </div>
     <div class="app-container">
         <button class="mobile-toggle" onclick="toggleSidebar()">
-            <i class="fas fa-bars"></i>
+            <i id="menu-icon" class="fas fa-bars"></i>
         </button>
         <aside class="sidebar">
             <div class="logo">
@@ -104,7 +104,7 @@ Async/Await"></textarea>
                 </div>
                 STEP<span>STACK</span>
             </div>
-            <button class="btn-primary" onclick="createNewCourse()">+ New Course</button>
+            <button class="btn-primary " id="mobile" onclick="createNewCourse()">+ New Course</button>
             <ul id="course-list"></ul>
         </aside>
 

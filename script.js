@@ -298,7 +298,18 @@ function copyPrompt() {
 // Add this to your script.js (Utilities section)
 function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
+    const menuIcon = document.getElementById('menu-icon');
+    
     sidebar.classList.toggle('active');
+    
+    // Icon change logic
+    if (sidebar.classList.contains('active')) {
+        menuIcon.classList.remove('fa-bars');
+        menuIcon.classList.add('fa-times'); // 'X' icon
+    } else {
+        menuIcon.classList.remove('fa-times');
+        menuIcon.classList.add('fa-bars'); // Hamburger icon
+    }
 }
 
 // Close sidebar when clicking a course on mobile

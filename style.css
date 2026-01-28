@@ -72,22 +72,25 @@ body {
 .app-container {
     display: flex;
     width: 100%;
-    min-height: 100vh; /* Ensure it takes full height but can grow */
-    height: auto; 
+    min-height: 100vh;
+    /* Ensure it takes full height but can grow */
+    height: auto;
     overflow: visible;
 }
 
 .main-content {
-    flex: 1;
+    flex: auto;
     padding: 2rem;
     width: 100%;
-    overflow-y: visible; /* Let the body handle the scroll */
+    overflow-y: visible;
+    /* Let the body handle the scroll */
 }
 
 /* Ensure the grid wraps and stays responsive */
 .roadmap-grid {
     display: flex;
-    flex-wrap: wrap; /* This makes items wrap to the next line */
+    flex-wrap: wrap;
+    /* This makes items wrap to the next line */
     gap: 1.5rem;
     margin-top: 2rem;
     align-items: flex-start;
@@ -95,20 +98,12 @@ body {
 
 /* Adjust card width for wrapping */
 .phase-card {
-    flex: 1 1 380px; /* Grow, shrink, and basis of 380px */
-    max-width: 100%; /* Prevent overflow on very small screens */
-    min-width: 300px; /* Minimum width before stacking */
-}
-
-/* Mobile specific overrides */
-@media (max-width: 768px) {
-    .main-content {
-        padding: 5rem 1rem 1rem 1rem;
-    }
-    
-    .phase-card {
-        flex: 1 1 100%; /* Take full width on mobile */
-    }
+    flex: 1 1 380px;
+    /* Grow, shrink, and basis of 380px */
+    max-width: 100%;
+    /* Prevent overflow on very small screens */
+    min-width: 300px;
+    /* Minimum width before stacking */
 }
 
 /* Sidebar Responsive Logic */
@@ -118,6 +113,8 @@ body {
     padding: 2rem 1.5rem;
     border-right: 1px solid #1e293b;
     display: flex;
+    position: fixed;
+    height: 100vh;
     flex-direction: column;
     flex-shrink: 0;
     transition: var(--transition-smooth);
@@ -126,7 +123,8 @@ body {
 
 /* Mobile Toggle Styling */
 .mobile-toggle {
-    display: none; /* Hidden on desktop */
+    display: none;
+    /* Hidden on desktop */
     position: fixed;
     top: 20px;
     left: 20px;
@@ -148,15 +146,17 @@ body {
 /* Tablet View: Collapse Sidebar to Icons */
 @media (max-width: 1024px) {
     .sidebar {
+        position: fixed;
+        top: 0px;
         width: 85px;
         padding: 2rem 0.75rem;
         align-items: center;
     }
 
-    .sidebar .logo span, 
-    .sidebar li div span, 
-    .sidebar .btn-primary span { 
-        display: none; 
+    .sidebar .logo span,
+    .sidebar li div span,
+    .sidebar .btn-primary span {
+        display: none;
     }
 
     .sidebar .btn-primary {
@@ -165,110 +165,12 @@ body {
     }
 
     .sidebar .logo {
-        font-size: 0; /* Hides text but keeps icon if you have one */
-    }
-}
-/* ==========================================================================
-   UPDATED RESPONSIVE QUERIES
-   ========================================================================== */
-
-/* Desktop & Tablet (Laptops) */
-@media (min-width: 769px) {
-    .mobile-toggle {
-        display: none;
-    }
-    .sidebar {
-        left: 0 !important; /* Ensure visibility on desktop */
+        font-size: 0;
+        /* Hides text but keeps icon if you have one */
     }
 }
 
-/* Mobile View (Phones & Small Tablets) */
-@media (max-width: 768px) {
-    .mobile-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        left: 15px;
-        top: 15px;
-    }
 
-    .sidebar {
-        position: fixed;
-        left: -280px; /* Hide off-screen */
-        top: 0;
-        bottom: 0;
-        height: 100vh;
-        width: 280px;
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: none;
-        background: var(--bg-sidebar);
-    }
-
-    /* This class is toggled by JS */
-    .sidebar.active {
-        transform: translateX(280px);
-        box-shadow: 20px 0 50px rgba(0, 0, 0, 0.9);
-    }
-
-    .main-content {
-        padding: 5rem 1rem 1rem 1rem; /* Space for the floating button */
-        width: 100%;
-        overflow-y: auto;
-    }
-
-    .header-info h1 {
-        font-size: 1.5rem;
-        margin-top: 0.5rem;
-    }
-
-    .roadmap-grid {
-        grid-template-columns: 1fr; /* Stack cards vertically */
-    }
-
-    /* Make modals easier to use on touch */
-    .modal-card {
-        padding: 1.5rem;
-        width: 95%;
-    }
-
-    /* Move FAB to not block the bottom right checklist items */
-    .fab-help {
-        bottom: 20px;
-        right: 20px;
-        top: auto; 
-        width: 50px;
-        height: 50px;
-    }
-}
-
-/* Mobile View: Sidebar becomes a Drawer */
-@media (max-width: 768px) {
-    .mobile-toggle {
-        display: block;
-    }
-
-    .sidebar {
-        position: fixed;
-        left: -280px; /* Hidden by default */
-        height: 100%;
-        width: 280px;
-    }
-
-    .sidebar.active {
-        left: 0;
-        box-shadow: 20px 0 50px rgba(0,0,0,0.8);
-    }
-
-    /* Adjust main content padding so toggle doesn't overlap title */
-    .main-content {
-        padding: 5rem 1.5rem 1.5rem 1.5rem;
-    }
-
-    /* Make grid single column on small phones */
-    .roadmap-grid {
-        grid-template-columns: 1fr;
-    }
-}
 
 /* ==========================================================================
    4. COMPONENTS
@@ -375,7 +277,7 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
     gap: 1.5rem;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
 }
 
 /* Phase Card */
@@ -727,4 +629,184 @@ textarea:focus {
 .mini-card {
     max-width: 400px;
     text-align: center;
+}
+
+header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-bar-bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40vw;
+}
+
+#roadmap-container {
+    margin: 0px 270px;
+}
+#helper-modal{
+    z-index: 99;
+}
+.helper-header{
+position: relative;
+}
+.cut{
+    position: absolute;
+    right: 20px;
+    top: 10px;
+}
+
+/* Mobile View (Phones & Small Tablets) */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 5rem 1rem 1rem 1rem;
+    }
+    .phase-card {
+    width: min-content;}
+
+    .phase-card {
+        flex: 1 1 100%;
+        /* Take full width on mobile */
+    }
+
+    .mobile-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        left: 15px;
+        top: 15px;
+    }
+    aside{
+        position: fixed;
+        left: -580px;
+        /* Hide off-screen */
+        top: 0;
+        bottom: 0;
+        height: 100vh;
+        width: 280px;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: none;
+        background: var(--bg-sidebar);
+    }
+    .mobile-toggle {
+        display: flex;
+        position: fixed;
+        left: 15px; /* Default position */
+        top: 15px;
+        z-index: 1100; /* Sidebar se upar */
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: var(--accent); /* Optional: button ko thoda highlight karne ke liye */
+        color: white;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    /* Jab sidebar active ho, button ko right move kar do */
+    .sidebar.active ~ .mobile-toggle, 
+    .app-container:has(.sidebar.active) .mobile-toggle {
+        left: 230px; /* Sidebar width ke thoda andar ya edge par */
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -280px;
+        top: 0;
+        width: 280px;
+        height: 100vh;
+        z-index: 1000;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    /* This class is toggled by JS */
+    .sidebar.active {
+        transform: translateX(-0px);
+        box-shadow: 20px 0 50px rgba(0, 0, 0, 0.9);
+    }
+
+    .main-content {
+        padding: 5rem .1rem 1rem 1rem;
+        /* Space for the floating button */
+        width: 100%;
+        overflow-y: auto;
+    }
+
+
+    .header-info h1 {
+        text-align: center;
+        font-size: 1.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .roadmap-grid {
+        grid-template-columns: 1fr;
+        /* Stack cards vertically */
+    }
+
+    /* Make modals easier to use on touch */
+    .modal-card {
+        padding: 1.5rem;
+        width: 90%;
+    }
+    .btn-primary{
+        display: block;
+        width:200px;
+    }
+    #mobile{
+        width:70%;
+    }
+    #course-list{
+
+        width: 90%;
+    }
+    /* Move FAB to not block the bottom right checklist items */
+    .fab-help {
+        bottom: 20px;
+        right: 20px;
+        top: auto;
+        width: 50px;
+        height: 50px;
+    }
+
+    .mobile-toggle {
+        display: block;
+    }
+
+    .sidebar.active {
+        left: 0;
+        box-shadow: 20px 0 50px rgba(0, 0, 0, 0.8);
+    }
+    .guide-step{
+        display: flex;
+        flex-wrap: wrap;
+        /* align-items: center; */
+        justify-content: center;
+    }
+
+    /* Adjust main content padding so toggle doesn't overlap title */
+    .main-content {
+        padding: 5rem 1.5rem 1.5rem 1.5rem;
+    }
+
+    /* Make grid single column on small phones */
+    .roadmap-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .progress-bar-bg {
+        width: 90vw;
+    }
+
+    #roadmap-container {
+        margin: 0px;
+        display: flex;
+        align-items: center;
+    }
 }
