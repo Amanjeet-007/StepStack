@@ -23,10 +23,10 @@ function init() {
     }
     renderSidebar();
     renderCourse();
-    
+
     // Setup Modal Submit Listener
     const submitBtn = document.getElementById('input-modal-submit');
-    if(submitBtn) submitBtn.onclick = handleInputSubmit;
+    if (submitBtn) submitBtn.onclick = handleInputSubmit;
 }
 
 // --- 3. RENDERING ENGINE ---
@@ -52,7 +52,20 @@ function renderCourse() {
     const course = courses[activeCourseIndex];
     const container = document.getElementById('roadmap-container');
     const titleEl = document.getElementById('active-course-title');
-    
+    // Inside renderCourse(), if course.data is empty:
+    if (course.data.length === 0) {
+        container.innerHTML = `
+        <div class="empty-roadmap-state">
+            <i class="fas fa-layer-group"></i>
+            <p>Your roadmap is empty.</p>
+            <button class="btn-primary" style="width:auto" onclick="openHelper()">
+                Get Help with AI Prompt
+            </button>
+        </div>
+    `;
+        return;
+    }
+
     if (!course || !container) return;
 
     titleEl.innerText = course.name;
@@ -61,7 +74,7 @@ function renderCourse() {
     course.data.forEach((phase, pIdx) => {
         const card = document.createElement('div');
         card.className = 'phase-card';
-        
+
         // Phase Header
         card.innerHTML = `
             <div class="phase-header" style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.5rem;">
@@ -72,12 +85,12 @@ function renderCourse() {
                 </div>
             </div>
         `;
-        
+
         // Task List
         phase.tasks.forEach((task, tIdx) => {
             if (!phase.completed) phase.completed = {};
             const isDone = phase.completed[tIdx] || false;
-            
+
             const item = document.createElement('div');
             item.className = `checklist-item ${isDone ? 'done' : ''}`;
             item.innerHTML = `
@@ -176,8 +189,8 @@ function openInputModal(title, defaultValue = "", callback) {
     const modal = document.getElementById('input-modal');
     const field = document.getElementById('custom-input-field');
     const titleEl = document.getElementById('input-modal-title');
-    
-    if(!modal || !field) return;
+
+    if (!modal || !field) return;
 
     titleEl.innerText = title;
     field.value = defaultValue;
@@ -215,7 +228,7 @@ function closeModal() {
 function handleCreateCourse() {
     const nameInput = document.getElementById('new-course-name');
     const contentInput = document.getElementById('new-course-content');
-    
+
     if (!nameInput.value || !contentInput.value) return alert("Fields cannot be empty");
 
     const lines = contentInput.value.split('\n');
@@ -235,7 +248,7 @@ function handleCreateCourse() {
 
     if (currentPhase) formattedData.push(currentPhase);
     courses.push({ name: nameInput.value, data: formattedData });
-    
+
     nameInput.value = '';
     contentInput.value = '';
     activeCourseIndex = courses.length - 1;
@@ -282,6 +295,21 @@ function copyPrompt() {
         setTimeout(() => btn.innerHTML = '<i class="fas fa-copy"></i> Copy Prompt', 2000);
     });
 }
+// Add this to your script.js (Utilities section)
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.toggle('active');
+}
+
+// Close sidebar when clicking a course on mobile
+const originalSwitchCourse = switchCourse;
+switchCourse = function(index) {
+    originalSwitchCourse(index);
+    if (window.innerWidth <= 768) {
+        toggleSidebar();
+    }
+};
+
 
 // START APP
 init();
