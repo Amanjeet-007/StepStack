@@ -128,7 +128,7 @@ body {
     position: fixed;
     top: 20px;
     left: 20px;
-    z-index: 1002;
+    z-index: 2;
     background: var(--accent);
     color: var(--bg-dark);
     border: none;
@@ -665,7 +665,9 @@ header {
     position: absolute;
     right: 20px;
     top: 10px;
+    cursor: pointer;
 }
+
 
 /* Mobile View (Phones & Small Tablets) */
 @media (max-width: 768px) {
@@ -677,7 +679,26 @@ header {
     .logo-icon span {
         display: flex;
     }
-
+    .delete-btn{
+        opacity: 1;
+    }
+   .task-actions,
+.phase-actions{
+    opacity: 1;
+}
+    .cut{
+        right: 5px;
+        top: 0px;
+    }
+    .guide-step{
+        text-align: center;
+        z-index: 14;
+        /* overflow: hidden; */
+    }
+    .copy-box{
+        width: 100%;
+        text-align: start;
+    }
     .main-content {
         padding: 5rem 1rem 1rem 1rem;
     }
@@ -718,7 +739,7 @@ header {
         left: 15px;
         /* Default position */
         top: 15px;
-        z-index: 1100;
+        z-index: 10;
         /* Sidebar se upar */
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         background: var(--accent);
