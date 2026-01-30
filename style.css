@@ -89,6 +89,7 @@ body {
 /* Ensure the grid wraps and stays responsive */
 .roadmap-grid {
     display: flex;
+    width: 78vw;
     flex-wrap: wrap;
     /* This makes items wrap to the next line */
     gap: 1.5rem;
@@ -98,7 +99,7 @@ body {
 
 /* Adjust card width for wrapping */
 .phase-card {
-    flex: 1 1 380px;
+    flex: 1 1 300px;
     /* Grow, shrink, and basis of 380px */
     max-width: 100%;
     /* Prevent overflow on very small screens */
@@ -241,14 +242,6 @@ body {
     background: var(--accent);
     box-shadow: var(--shadow-glow);
     transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-/* Roadmap Grid */
-.roadmap-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.5rem;
 }
 
 /* Phase Card */
@@ -477,6 +470,10 @@ textarea:focus {
     color: var(--accent);
 }
 
+.action-icon.pinned {
+    color: var(--accent);
+}
+
 .action-icon.delete:hover {
     color: var(--danger);
 }
@@ -597,31 +594,44 @@ textarea:focus {
 }
 
 .fab-help {
-    position: fixed;
-    top: 30px;
-    right: 30px;
-    width: 60px;
+    width: 100%;
     height: 60px;
     background: var(--accent);
     color: var(--bg-dark);
-    border-radius: 50%;
+    border-radius: var(--radius-md);
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.5rem;
+    font-size: 1rem;
     cursor: pointer;
-    box-shadow: 0 10px 20px var(--accent-glow);
+    box-shadow: 0 4px 15px var(--accent-glow);
     transition: var(--transition-smooth);
-    z-index: 99;
+    margin-top: auto;
+}
+.profile{
+    position: absolute;
+    right: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-direction: column;
 }
 
 .fab-help:hover {
-    transform: scale(1.1) rotate(15deg);
+    transform: scale(1.05);
 }
 
 .mini-card {
     max-width: 400px;
     text-align: center;
+}
+#confirm-message{
+    margin-bottom: 20px;
+}
+#confirm-yes {
+    background: var(--danger) !important;
+    color: white;
 }
 
 header {
@@ -638,15 +648,11 @@ header {
 
 .progress-bar-bg {
     display: flex;
-    align-items: center;
-    /* double way progress*/
-    justify-content: center;
-    /* double way progress*/
     width: 40vw;
 }
 
 .fab-help {
-    z-index: 99;
+    /* z-index: 99; */
 }
 
 #roadmap-container {
@@ -667,6 +673,35 @@ header {
     top: 10px;
     cursor: pointer;
 }
+.profile-avatar {
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.2));
+}
+
+.profile-avatar:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 12px var(--accent-glow));
+}
+
+/* Optional: Add a container in the sidebar for the profile section */
+.sidebar-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    text-align: center;
+}
+
+.profile-info h4 {
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+.profile-info p {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+}
 
 
 /* Mobile View (Phones & Small Tablets) */
@@ -675,6 +710,12 @@ header {
         width: 100%;
         margin-top: -15px;
         padding-bottom: 20px;
+    }
+    .profile{
+        top: 16px;
+    }
+    .profile-info{
+        display: none;
     }
     .logo-icon span {
         display: flex;
@@ -704,7 +745,7 @@ header {
     }
 
     .phase-card {
-        width: min-content;
+        width: 100%;
     }
 
     .phase-card {
@@ -822,13 +863,13 @@ header {
     }
 
     /* Move FAB to not block the bottom right checklist items */
-    .fab-help {
+    /* .fab-help {
         bottom: 20px;
         right: 20px;
         top: auto;
         width: 50px;
         height: 50px;
-    }
+    } */
 
     .mobile-toggle {
         display: block;
@@ -853,6 +894,7 @@ header {
 
     /* Make grid single column on small phones */
     .roadmap-grid {
+        width: 90vw;
         grid-template-columns: 1fr;
     }
 

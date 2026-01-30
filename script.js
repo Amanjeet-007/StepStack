@@ -4,23 +4,37 @@
  */
 
 // --- 1. DATA & STATE ---
-const dsaRoadmapData = [
-    { title: "PHASE 0: Foundations", tasks: ["Complexity (Big-O)", "Math for DSA", "Recursion Basics"], completed: {} },
-    { title: "PHASE 1: Arrays & Strings", tasks: ["Sliding Window", "Two Pointers", "Kadane's Algorithm"], completed: {} },
-    { title: "PHASE 2: Searching & Sorting", tasks: ["Binary Search", "Merge Sort", "Quick Sort"], completed: {} },
-    { title: "PHASE 3: Hashing", tasks: ["Frequency Counting", "Two Sum", "Longest Consecutive Sequence"], completed: {} },
-    { title: "PHASE 4: Linked List", tasks: ["Reversing", "Cycle Detection", "Merge Two Lists"], completed: {} }
+const sampleRoadmapData = [
+    { title: "PHASE 1: HTML & CSS Basics",
+      tasks: [
+              "Learn HTML structure",
+              "CSS selectors and properties",
+              "Responsive design with media queries",
+              "Flexbox and Grid layouts"],
+
+      completed: {0: true, 1: true}, pinned: false },
+    { title: "PHASE 2: JavaScript Fundamentals", tasks: ["Variables, data types, and operators", "Functions and scope", "DOM manipulation", "Event handling"], completed: {0: true}, pinned: true },
+    { title: "PHASE 3: Frontend Frameworks", tasks: ["Introduction to React", "Component lifecycle", "State management", "Routing with React Router"], completed: {}, pinned: false },
+    { title: "PHASE 4: Backend Development", tasks: ["Node.js basics", "Express.js for APIs", "Database integration (MongoDB)", "Authentication and security"], completed: {}, pinned: false },
+    { title: "PHASE 5: Deployment & Best Practices", tasks: ["Version control with Git", "Deploy to platforms like Vercel/Netlify", "Testing and debugging", "Performance optimization"], completed: {}, pinned: false }
 ];
 
 let courses = JSON.parse(localStorage.getItem('courses')) || [];
 let activeCourseIndex = 0;
 let currentInputCallback = null;
+let currentConfirmCallback = null;
 
 // --- 2. INITIALIZATION ---
 function init() {
     if (courses.length === 0) {
-        courses.push({ name: "DSA Mastery", data: JSON.parse(JSON.stringify(dsaRoadmapData)) });
+        courses.push({ name: "Sample Roadmap: Web Development", data: JSON.parse(JSON.stringify(sampleRoadmapData)) });
     }
+    // Ensure all phases have pinned property
+    courses.forEach(course => {
+        course.data.forEach(phase => {
+            if (phase.pinned === undefined) phase.pinned = false;
+        });
+    });
     renderSidebar();
     renderCourse();
 
@@ -71,7 +85,14 @@ function renderCourse() {
     titleEl.innerText = course.name;
     container.innerHTML = '';
 
-    course.data.forEach((phase, pIdx) => {
+    // Sort phases: pinned first, then by original index
+    const sortedPhases = course.data.map((phase, idx) => ({ ...phase, originalIndex: idx })).sort((a, b) => {
+        if (a.pinned && !b.pinned) return -1;
+        if (!a.pinned && b.pinned) return 1;
+        return a.originalIndex - b.originalIndex;
+    });
+
+    sortedPhases.forEach(({ originalIndex: pIdx, ...phase }) => {
         const card = document.createElement('div');
         card.className = 'phase-card';
 
@@ -80,6 +101,7 @@ function renderCourse() {
             <div class="phase-header" style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.5rem;">
                 <h3 style="margin:0"><i class="fas fa-layer-group"></i> ${phase.title}</h3>
                 <div class="phase-actions">
+                    <i class="fas fa-thumbtack action-icon ${phase.pinned ? 'pinned' : ''}" onclick="togglePin(${pIdx})"></i>
                     <i class="fas fa-edit action-icon" onclick="editPhase(${pIdx})"></i>
                     <i class="fas fa-trash action-icon delete" onclick="deletePhase(${pIdx})"></i>
                 </div>
@@ -127,13 +149,13 @@ function switchCourse(index) {
 }
 
 function deleteCourse(index) {
-    if (confirm(`Delete "${courses[index].name}"?`)) {
+    openConfirmModal("Delete Course", `Are you sure you want to delete "${courses[index].name}"? This action cannot be undone.`, () => {
         courses.splice(index, 1);
         activeCourseIndex = Math.max(0, activeCourseIndex - 1);
         saveAndRefresh();
         renderSidebar();
         if (courses.length === 0) resetMainUI();
-    }
+    });
 }
 
 function toggleTask(pIdx, tIdx) {
@@ -159,13 +181,13 @@ function editTask(pIdx, tIdx) {
 }
 
 function deleteTask(pIdx, tIdx) {
-    if (confirm("Delete this task?")) {
+    openConfirmModal("Delete Task", "Are you sure you want to delete this task?", () => {
         courses[activeCourseIndex].data[pIdx].tasks.splice(tIdx, 1);
         if (courses[activeCourseIndex].data[pIdx].completed) {
             delete courses[activeCourseIndex].data[pIdx].completed[tIdx];
         }
         saveAndRefresh();
-    }
+    });
 }
 
 function editPhase(pIdx) {
@@ -177,10 +199,16 @@ function editPhase(pIdx) {
 }
 
 function deletePhase(pIdx) {
-    if (confirm("Delete this entire phase?")) {
+    openConfirmModal("Delete Phase", "Are you sure you want to delete this entire phase? All tasks in this phase will be lost.", () => {
         courses[activeCourseIndex].data.splice(pIdx, 1);
         saveAndRefresh();
-    }
+    });
+}
+
+function togglePin(pIdx) {
+    const phase = courses[activeCourseIndex].data[pIdx];
+    phase.pinned = !phase.pinned;
+    saveAndRefresh();
 }
 
 // --- 5. MODAL LOGIC ---
@@ -217,6 +245,31 @@ function closeInputModal() {
     currentInputCallback = null;
 }
 
+function openConfirmModal(title, message, callback) {
+    const modal = document.getElementById('confirm-modal');
+    const titleEl = document.getElementById('confirm-title');
+    const messageEl = document.getElementById('confirm-message');
+    const yesBtn = document.getElementById('confirm-yes');
+
+    if (!modal) return;
+
+    titleEl.innerText = title;
+    messageEl.innerText = message;
+    modal.style.display = 'flex';
+    currentConfirmCallback = callback;
+
+    // Set up the yes button
+    yesBtn.onclick = () => {
+        if (currentConfirmCallback) currentConfirmCallback();
+        closeConfirmModal();
+    };
+}
+
+function closeConfirmModal() {
+    document.getElementById('confirm-modal').style.display = 'none';
+    currentConfirmCallback = null;
+}
+
 function createNewCourse() {
     document.getElementById('modal-overlay').style.display = 'flex';
 }
@@ -240,7 +293,7 @@ function handleCreateCourse() {
         if (!trimmed) return;
         if (trimmed.startsWith('#')) {
             if (currentPhase) formattedData.push(currentPhase);
-            currentPhase = { title: trimmed.replace('#', '').trim(), tasks: [], completed: {} };
+            currentPhase = { title: trimmed.replace('#', '').trim(), tasks: [], completed: {}, pinned: false };
         } else if (currentPhase) {
             currentPhase.tasks.push(trimmed);
         }

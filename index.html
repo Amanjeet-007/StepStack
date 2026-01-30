@@ -37,13 +37,12 @@
                         <h3>Copy the AI Prompt</h3>
                         <p>Use this prompt with ChatGPT or Gemini to get perfectly formatted data.</p>
                         <div class="copy-box">
-                            <pre id="ai-prompt">Create a detailed roadmap for [TOPIC]. 
-Strictly follow this format:
+                            <pre id="ai-prompt">Generate a [TOPIC] roadmap. Use ONLY this format:
 # Phase Name
-Task 1
-Task 2
+Task
+Task
 # Next Phase
-Task 3</pre>
+Task</pre>
                             <button class="btn-copy" onclick="copyPrompt()">
                                 <i class="fas fa-copy"></i> Copy Prompt
                             </button>
@@ -74,7 +73,7 @@ Task 3</pre>
             <input type="text" id="new-course-name" placeholder="Course Name (e.g. Web Dev 2026)">
 
             <label>Structure your phases like this:</label>
-            <textarea  id="new-course-content" placeholder="# Phase 1: Basics
+            <textarea id="new-course-content" placeholder="# Phase 1: Basics
 Variable types
 Loops
 # Phase 2: Advanced
@@ -84,6 +83,16 @@ Async/Await"></textarea>
             <div class="modal-actions">
                 <button class="btn-secondary" onclick="closeModal()">Cancel</button>
                 <button class="btn-primary" onclick="handleCreateCourse()">Generate Roadmap</button>
+            </div>
+        </div>
+    </div>
+    <div id="confirm-modal" class="modal-overlay">
+        <div class="modal-card mini-card">
+            <h3 id="confirm-title">Confirm Deletion</h3>
+            <p id="confirm-message">Are you sure you want to delete this item?</p>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeConfirmModal()">Cancel</button>
+                <button class="btn-primary" id="confirm-yes">Delete</button>
             </div>
         </div>
     </div>
@@ -102,13 +111,14 @@ Async/Await"></textarea>
             </div>
             <button class="btn-primary " id="mobile" onclick="createNewCourse()">+ New Course</button>
             <ul id="course-list"></ul>
+            <div class="fab-help" onclick="openHelper()" title="How to create a roadmap">
+                <i class="fas fa-map-signs"></i>
+                <p style="margin-left: 10px;">Instruction</p>
+            </div>
         </aside>
 
         <main class="main-content">
             <header>
-                <div class="fab-help" onclick="openHelper()" title="How to create a roadmap">
-                    <i class="fas fa-map-signs"></i>
-                </div>
                 <div class="header-info">
                     <h1 id="active-course-title">Select a Course</h1>
                     <div class="progress-container">
@@ -117,6 +127,30 @@ Async/Await"></textarea>
                         </div>
                         <span id="progress-text">0% Complete</span>
                     </div>
+                </div>
+                <div class="profile">
+                    <div class="sidebar-profile">
+                         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="profile-avatar">
+                        <circle cx="20" cy="20" r="20" fill="#1e293b" />
+
+                        <circle cx="20" cy="20" r="18" stroke="#334155" stroke-width="2" />
+                        <!-- daily progress bar in profile  -->
+                        <circle cx="20" cy="20" r="18" stroke="#38bdf8" stroke-width="2" stroke-dasharray="111 100"
+                            stroke-linecap="round" transform="rotate(-90 20 20)" /> 
+
+                        <path
+                            d="M20 19C22.2091 19 24 17.2091 24 15C24 12.7909 22.2091 11 20 11C17.7909 11 16 12.7909 16 15C16 17.2091 17.7909 19 20 19Z"
+                            fill="#f8fafc" />
+                        <path d="M12 28.5C12 24.9101 14.9101 22 18.5 22H21.5C25.0899 22 28 24.9101 28 28.5V29H12V28.5Z"
+                            fill="#f8fafc" />
+                    </svg>
+                        <div class="profile-info">
+                            <h4>User Name</h4>
+                            <p>Pro Learner</p>
+                        </div>
+                    </div>
+                   
                 </div>
             </header>
 
