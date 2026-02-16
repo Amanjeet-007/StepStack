@@ -5,15 +5,17 @@
 
 // --- 1. DATA & STATE ---
 const sampleRoadmapData = [
-    { title: "PHASE 1: HTML & CSS Basics",
-      tasks: [
-              "Learn HTML structure",
-              "CSS selectors and properties",
-              "Responsive design with media queries",
-              "Flexbox and Grid layouts"],
+    {
+        title: "PHASE 1: HTML & CSS Basics",
+        tasks: [
+            "Learn HTML structure",
+            "CSS selectors and properties",
+            "Responsive design with media queries",
+            "Flexbox and Grid layouts"],
 
-      completed: {0: true, 1: true}, pinned: false },
-    { title: "PHASE 2: JavaScript Fundamentals", tasks: ["Variables, data types, and operators", "Functions and scope", "DOM manipulation", "Event handling"], completed: {0: true}, pinned: true },
+        completed: { 0: true, 1: true }, pinned: false
+    },
+    { title: "PHASE 2: JavaScript Fundamentals", tasks: ["Variables, data types, and operators", "Functions and scope", "DOM manipulation", "Event handling"], completed: { 0: true }, pinned: true },
     { title: "PHASE 3: Frontend Frameworks", tasks: ["Introduction to React", "Component lifecycle", "State management", "Routing with React Router"], completed: {}, pinned: false },
     { title: "PHASE 4: Backend Development", tasks: ["Node.js basics", "Express.js for APIs", "Database integration (MongoDB)", "Authentication and security"], completed: {}, pinned: false },
     { title: "PHASE 5: Deployment & Best Practices", tasks: ["Version control with Git", "Deploy to platforms like Vercel/Netlify", "Testing and debugging", "Performance optimization"], completed: {}, pinned: false }
@@ -66,7 +68,9 @@ function renderCourse() {
     const course = courses[activeCourseIndex];
     const container = document.getElementById('roadmap-container');
     const titleEl = document.getElementById('active-course-title');
-    // Inside renderCourse(), if course.data is empty:
+
+    if (!course || !container) return;
+
     if (course.data.length === 0) {
         container.innerHTML = `
         <div class="empty-roadmap-state">
@@ -75,17 +79,14 @@ function renderCourse() {
             <button class="btn-primary" style="width:auto" onclick="openHelper()">
                 Get Help with AI Prompt
             </button>
-        </div>
-    `;
+        </div>`;
         return;
     }
-
-    if (!course || !container) return;
 
     titleEl.innerText = course.name;
     container.innerHTML = '';
 
-    // Sort phases: pinned first, then by original index
+    // Sort phases: pinned first
     const sortedPhases = course.data.map((phase, idx) => ({ ...phase, originalIndex: idx })).sort((a, b) => {
         if (a.pinned && !b.pinned) return -1;
         if (!a.pinned && b.pinned) return 1;
@@ -128,12 +129,33 @@ function renderCourse() {
             card.appendChild(item);
         });
 
-        // Add Task Button Footer
+        // --- NEW BUTTON SECTION ---
+        const footerActions = document.createElement('div');
+        footerActions.className = 'phase-footer-actions';
+        footerActions.style.display = 'flex';
+        footerActions.style.gap = '10px';
+        footerActions.style.marginTop = '15px';
+
         const addBtn = document.createElement('button');
         addBtn.className = 'btn-add-task';
+        addBtn.style.flex = "1";
+        addBtn.style.marginTop = "0";
         addBtn.innerHTML = '<i class="fas fa-plus"></i> Add Task';
         addBtn.onclick = () => addTask(pIdx);
-        card.appendChild(addBtn);
+
+        const readBtn = document.createElement('button');
+        readBtn.className = 'btn-secondary'; 
+        readBtn.style.flex = "1";
+        readBtn.style.marginBottom = "0";
+        readBtn.style.padding = "12px"; 
+        readBtn.innerHTML = '<i class="fas fa-book-reader"></i> Read';
+        readBtn.onclick = () => {
+            alert(`Opening resources for: ${phase.title}`);
+        };
+
+        footerActions.appendChild(addBtn);
+        footerActions.appendChild(readBtn);
+        card.appendChild(footerActions);
 
         container.appendChild(card);
     });
@@ -352,9 +374,9 @@ function copyPrompt() {
 function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
     const menuIcon = document.getElementById('menu-icon');
-    
+
     sidebar.classList.toggle('active');
-    
+
     // Icon change logic
     if (sidebar.classList.contains('active')) {
         menuIcon.classList.remove('fa-bars');
@@ -367,7 +389,7 @@ function toggleSidebar() {
 
 // Close sidebar when clicking a course on mobile
 const originalSwitchCourse = switchCourse;
-switchCourse = function(index) {
+switchCourse = function (index) {
     originalSwitchCourse(index);
     if (window.innerWidth <= 768) {
         toggleSidebar();

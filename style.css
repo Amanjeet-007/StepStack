@@ -702,7 +702,26 @@ header {
     font-size: 0.75rem;
     color: var(--text-dim);
 }
+.phase-footer-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
 
+.phase-footer-actions button {
+    flex: 1; /* Equal width */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 480px) {
+    .phase-footer-actions {
+        flex-direction: column; /* Stack on very small screens if needed */
+    }
+}
 
 /* Mobile View (Phones & Small Tablets) */
 @media (max-width: 768px) {
